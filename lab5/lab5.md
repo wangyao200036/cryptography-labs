@@ -1,76 +1,67 @@
+---
+title: "Отчёт по лабораторной работе №5"
+author: "Ван Яо"
 
+lang: ru-RU
+toc-title: "Содержание"
+
+bibliography: bib/cite.bib
+csl: pandoc/csl/gost-r-7-0-5-2008-numeric.csl
+
+toc: true
+toc-depth: 2
+lof: true
+lot: true
+fontsize: 12pt
+linestretch: 1.5
+papersize: a4
+documentclass: scrreprt
+
+polyglossia-lang:
+  name: russian
+  options:
+    - spelling=modern
+    - babelshorthands=true
+polyglossia-otherlangs:
+  name: english
+
+babel-lang: russian
+babel-otherlangs: english
+
+mainfont: Times New Roman
+romanfont: Times New Roman
+sansfont: Arial
+monofont: Courier New
+mainfontoptions: Ligatures=TeX
+romanfontoptions: Ligatures=TeX
+sansfontoptions: Ligatures=TeX,Scale=MatchLowercase
+monofontoptions: Scale=MatchLowercase,Scale=0.9
+
+biblatex: true
+biblio-style: "gost-numeric"
+biblatexoptions:
+  - parentracker=true
+  - backend=biber
+  - hyperref=auto
+  - language=auto
+  - autolang=other*
+  - citestyle=gost-numeric
+
+figureTitle: "Рис."
+tableTitle: "Таблица"
+listingTitle: "Листинг"
+lofTitle: "Список иллюстраций"
+lotTitle: "Список таблиц"
+lolTitle: "Листинги"
+
+indent: true
+header-includes:
+  - \usepackage{indentfirst}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
 ---
 
-<div style="text-align: center; line-height: 1.5;">
-
-**ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ
-ВЫСШЕГО ОБРАЗОВАНИЯ «РОССИЙСКИЙ УНИВЕРСИТЕТ ДРУЖБЫ НАРОДОВ»**
-
-**Факультет физико-математических и естественных наук**
-
-**Кафедра теории вероятностей и кибербезопасности**
-
-<br>
-
-
-
-
-
-
-
-
-
-<br>
-
-**Лабораторная работа № 5**
-
-**Вероятностные алгоритмы проверки чисел на простоту**
-
-<br>
-<br>
-
-
-
-
-
-<br>
-
-
-
-
-
-
-
-| Студент: | Ван Яо |
-|----------|------------|
-| Группа:  | НФИмд-01-25 |
-
-<br>
-<br>
-<br>
-
-
-
-
-
-
-
-
-
-<br>
-<br>
-<br>
-<br>
-
-**МОСКВА**
-
-**2025 г.**
-
-</div>
-
-<div style="page-break-after: always;"></div>
-
-## Цель работы
+# Цель работы
 
 1. изучить теоретические основы вероятностных алгоритмов проверки чисел на простоту
 2. реализовать программно три вероятностных теста
@@ -78,7 +69,12 @@
    - тест Соловэя-Шторассена
    - тест Миллера-Рабина
 3. провести сравнительный анализ эффективности и точности алгоритмов
-## Теоретическая часть
+
+
+# Ход лабораторной работы
+
+## Теоретические основы
+
 
 ### Определение 
 **Простое число** - натуральное число, имеющее ровно два делителя:единицу и само себя
@@ -90,9 +86,11 @@
 
 ### 1. Тест Ферма
 
-Основна на малой теореме ферма: для простого числа $р$ и произвольного числа $а$, $1 \leq a \leq q-1 $ выполняется сравнение:
+Основна на малой теореме ферма: для простого числа р и произвольного числа а, $1 \leq a \leq q-1$ выполняется сравнение:
 
-$ a^{n-1}\equiv 1 \pmod{p} $
+$$
+a^{n-1} \equiv 1 \pmod{p}
+$$
 
 **Алгоритм:**
 
@@ -108,8 +106,8 @@ $ a^{n-1}\equiv 1 \pmod{p} $
 
 1. при $a=0$, результат: 0
 2. при $a=1$, результат: $g$
-3. представить $a$ в виде $a = 2^ka_1$, где $ a_1$ нечетное
-4. определить $s$ в зависимости от $k$ и $n\pmod{8} $
+3. представить $a$ в виде $a = 2^ka_1$, где $a_1$ нечетное
+4. определить $s$ в зависимости от $k$ и $n$$\pmod{8}$
 5. выполнить рекурсивные вычисления
 
 **Алгоритм:**
@@ -132,18 +130,16 @@ $ a^{n-1}\equiv 1 \pmod{p} $
 1. выбрать случайное целое число $a$,$2\leq a < n-2$
 1. вычислять  $y \leftarrow a^r \pmod{n}$
 1. если $y\neq 1$ и $y\neq n-1$,выполнить итерации возведения в квадрат 
-1. если $y = 1 $, результат :число $n$ составное
+1. если $y = 1$, результат :число $n$ составное
 1. если после всех итерации $y \neq n-1$,результат :число $n$ составное, иначе число $n$, вероятно простое
 
 ## Практическая реализация
 
-### Пример кода
-
-тест ферма
+### Реализация теста Ферма
 
 ![](https://github.com/wangyao200036/cryptography-labs/raw/main/lab5/pic/1.png)
 
-тест Соловэя-Шторассена
+### Реализация теста Соловэя-Штрассена
 
 ![](https://github.com/wangyao200036/cryptography-labs/raw/main/lab5/pic/2.png)
 
@@ -151,12 +147,12 @@ $ a^{n-1}\equiv 1 \pmod{p} $
 
 ![](https://github.com/wangyao200036/cryptography-labs/raw/main/lab5/pic/3.png)
 
-тест Миллера-Рабина
+### Реализация теста Миллера-Рабина
 
 ![](https://github.com/wangyao200036/cryptography-labs/raw/main/lab5/pic/4.png)
 
 
-### Функциональное тестирование
+## Функциональное тестирование
 
 | Число для проверки | Ожидаемый результат | Тест Ферма | Тест Соловэя-Штрассена | Тест Миллера-Рабина |
 | ------------------ | ------------------- | ---------- | ---------------------- | ------------------- |
@@ -168,7 +164,7 @@ $ a^{n-1}\equiv 1 \pmod{p} $
 
 
 
-## Выводы
+# Выводы
 
 1. **Теоретические знания:**  
 
@@ -182,4 +178,12 @@ $ a^{n-1}\equiv 1 \pmod{p} $
 
    ​	Тест Миллера-Рабина показал наибольшую надежность среди рассмотренных алгоритмов, правильно идентифицируя кармайкловы числа.
 
-   
+# Литература
+
+1. Василенко О.Н. Теоретико-числовые алгоритмы в криптографии. М.: МЦНМО, 2003.
+2. Python Software Foundation. Официальная документация Python. https://docs.python.org/3/
+
+# Приложения
+
+Полный исходный код программ доступен в репозитории GitHub:  
+https://github.com/wangyao200036/cryptography-labs/tree/main/lab5

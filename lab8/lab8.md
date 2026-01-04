@@ -1,81 +1,75 @@
+---
+title: "Отчёт по лабораторной работе №8"
+author: "Ван Яо"
 
+lang: ru-RU
+toc-title: "Содержание"
+
+bibliography: bib/cite.bib
+csl: pandoc/csl/gost-r-7-0-5-2008-numeric.csl
+
+toc: true
+toc-depth: 2
+lof: true
+lot: true
+fontsize: 12pt
+linestretch: 1.5
+papersize: a4
+documentclass: scrreprt
+
+polyglossia-lang:
+  name: russian
+  options:
+    - spelling=modern
+    - babelshorthands=true
+polyglossia-otherlangs:
+  name: english
+
+babel-lang: russian
+babel-otherlangs: english
+
+mainfont: Times New Roman
+romanfont: Times New Roman
+sansfont: Arial
+monofont: Courier New
+mainfontoptions: Ligatures=TeX
+romanfontoptions: Ligatures=TeX
+sansfontoptions: Ligatures=TeX,Scale=MatchLowercase
+monofontoptions: Scale=MatchLowercase,Scale=0.9
+
+biblatex: true
+biblio-style: "gost-numeric"
+biblatexoptions:
+  - parentracker=true
+  - backend=biber
+  - hyperref=auto
+  - language=auto
+  - autolang=other*
+  - citestyle=gost-numeric
+
+figureTitle: "Рис."
+tableTitle: "Таблица"
+listingTitle: "Листинг"
+lofTitle: "Список иллюстраций"
+lotTitle: "Список таблиц"
+lolTitle: "Листинги"
+
+indent: true
+header-includes:
+  - \usepackage{indentfirst}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
 ---
 
-<div style="text-align: center; line-height: 1.5;">
-
-**ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ
-ВЫСШЕГО ОБРАЗОВАНИЯ «РОССИЙСКИЙ УНИВЕРСИТЕТ ДРУЖБЫ НАРОДОВ»**
-
-**Факультет физико-математических и естественных наук**
-
-**Кафедра теории вероятностей и кибербезопасности**
-
-<br>
-
-
-
-
-
-
-
-
-
-<br>
-
-**Лабораторная работа № 8**
-
-**Целочисленная арифметика многократной точности**
-
-<br>
-<br>
-
-
-
-
-
-<br>
-
-
-
-
-
-
-
-| Студент: | Ван Яо |
-|----------|------------|
-| Группа:  | НФИмд-01-25 |
-
-<br>
-<br>
-<br>
-
-
-
-
-
-
-
-
-
-<br>
-<br>
-<br>
-<br>
-
-**МОСКВА**
-
-**2025 г.**
-
-</div>
-
-<div style="page-break-after: always;"></div>
-
-## Цель работы
+# Цель работы
 
 1. Изучить теоретические основы арифметических операций с целыми числами многократной точности.
 2. Реализовать программно алгоритмы сложения, вычитания, умножения и деления больших целых чисел.
 3. Провести тестирование реализованных алгоритмов на различных примерах.
-## Теоретическая часть
+
+# Ход лабораторной работы
+
+## Теоретические основы
 
 ### 1.Представление больших целых чисел
 
@@ -167,35 +161,35 @@ $$
 
 #### **1.Вспомогательные функции**
 
-<img src="https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/1.png" style="zoom:80%;" />
+![Вспомогательные функции для работы с большими числами](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/1.png){ #fig:001 width=80% }
 
 #### **2.Алгоритм вычитания**
 
-<img src="https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/2.png" style="zoom:80%;" />
+![Реализация алгоритма сложения](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/2.png){ #fig:002 width=80% }
 
 #### **3. Алгоритм вычитания**
 
-<img src="https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/3.png" style="zoom:80%;" />
+![Реализация алгоритма вычитания](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/3.png){ #fig:003 width=80% }
 
 #### **4. Алгоритм умножения столбиком**
 
-<img src="https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/4.png" style="zoom:80%;" />
+![Реализация умножения столбиком](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/4.png){ #fig:004 width=80% }
 
 #### **5. Алгоритм быстрого умножения**
 
-<img src="https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/5.png" style="zoom:80%;" />
+![Реализация быстрого умножения](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/5.png){ #fig:005 width=80% }
 
 #### **6. Алгоритм деления**
 
-![](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/6.png)
+![Основная часть алгоритма деления](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/6.png){ #fig:006 width=80% }
 
-![](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/7.png)
+![Дополнительные функции для деления](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/7.png){ #fig:007 width=80% }
 
 #### тестирование
 
-<img src="https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/8.png" style="zoom: 67%;" />
+![Тестирование всех арифметических операций](https://github.com/wangyao200036/cryptography-labs/raw/main/lab8/pic/8.png){ #fig:008 width=70% }
 
-## Выводы
+# Выводы
 
 1. **Теоретические знания:** В ходе лабораторной работы изучены теоретические основы арифметических операций с целыми числами многократной точности. Освоены различные алгоритмы для выполнения операций сложения, вычитания, умножения и деления больших чисел, представленных в $b$-ичной системе счисления.
 2. **Практические навыки:** Успешно реализованы все пять алгоритмов на языке Python:
@@ -207,5 +201,13 @@ $$
 3. **Результаты тестирования:** Проведено тестирование всех реализованных алгоритмов на различных примерах. Все алгоритмы работают корректно и выдают ожидаемые результаты. Программа успешно обрабатывает как простые, так и сложные случаи, включая операции с переносами, займами и различными основаниями систем счисления.
 4. **Применение и значимость:** Полученные навыки имеют важное практическое значение в криптографии, компьютерной алгебре и других областях, где требуется работа с числами, превышающими стандартные типы данных. Алгоритмы многократной точности являются фундаментальными для реализации современных криптографических протоколов и систем компьютерной алгебры.
 
-​	
+# Литература
+
+1. Кнут Д. Искусство программирования. Том 2. Получисленные алгоритмы. М.: Вильямс, 2007.
+2. Python Software Foundation. Официальная документация Python. https://docs.python.org/3/
+
+# Приложения
+
+Полный исходный код программ доступен в репозитории GitHub:  
+https://github.com/wangyao200036/cryptography-labs/tree/main/lab8
 
