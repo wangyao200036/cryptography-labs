@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU" xml:lang="ru-RU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Wang Yao" />
+  <title>Лабораторная работа №1</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  
+  
+  
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Лабораторная работа №1</h1>
+<p class="author">Wang Yao</p>
+<p class="date">3 January, 2026 Moscow</p>
+</header>
+<h1 id="цель-работы">Цель работы</h1>
+<p>Разобраться с основными принципами функционирования шифров замены. Изучить исторические шифры простой замены, их математические модели, уязвимости и применение в образовательных целях.</p>
+<hr />
+<h1 id="ход-лабораторной-работы">Ход лабораторной работы</h1>
+<h2 id="введение-в-шифры-замены">Введение в шифры замены</h2>
+<p><strong>Шифр простой замены</strong>: замена символов открытого текста на символы шифроалфавита</p>
+<p><strong>Моноалфавитная подстановка</strong>: каждый символ заменяется фиксированно</p>
+<p><strong>Историческое значение</strong>: древнейшие криптографические методы</p>
+<p><strong>Применение</strong>: образовательные цели, основы криптографии</p>
+<hr />
+<h2 id="шифр-цезаря">Шифр Цезаря</h2>
+<p><strong>История</strong>: использовался Юлием Цезарем в I веке до н.э.</p>
+<p><strong>Математическая модель</strong>:<br />
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>T</mi><mi>j</mi></msup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>+</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo><mo>mod</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">
+T^j(a) = (a + j) \mod m
+</annotation></semantics></math></p>
+<p><strong>Ключ</strong>: величина сдвига <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math></p>
+<p><strong>Пример</strong>:<br />
+Исходный текст: “VENI VIDI VICI”<br />
+Зашифрованный текст: “YHQL YLGL YLFL”</p>
+<hr />
+<h2 id="шифр-атбаша">Шифр Атбаша</h2>
+<p><strong>Принцип</strong>: зеркальное отображение алфавита</p>
+<p><strong>Математическая модель</strong>:<br />
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo>−</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
+T(a) = (m - 1 - a)
+</annotation></semantics></math></p>
+<p><strong>Особенность</strong>: отсутствие ключа, фиксированное преобразование</p>
+<p><strong>Пример для русского алфавита</strong>:<br />
+а → я, б → ю, в → э, …, я → а</p>
+<hr />
+<h2 id="криптоанализ-и-уязвимости">Криптоанализ и уязвимости</h2>
+<p><strong>Уязвимости шифра Цезаря</strong>:</p>
+<ul>
+<li>Малое пространство ключей <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(m-1)</annotation></semantics></math> вариантов</li>
+<li>Сохранение частотных характеристик</li>
+<li>Уязвимость к частотному анализу</li>
+</ul>
+<p><strong>Уязвимости шифра Атбаша</strong>:</p>
+<ul>
+<li>Отсутствие ключа</li>
+<li>Самодвойственность</li>
+<li>Уязвимость к частотному анализу</li>
+</ul>
+<hr />
+<h2 id="сравнительный-анализ">Сравнительный анализ</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Параметр</th>
+<th>Цезарь</th>
+<th>Атбаш</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Пространство ключей</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m-1</annotation></semantics></math></td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Сложность взлома</td>
+<td>Низкая</td>
+<td>Очень низкая</td>
+</tr>
+<tr class="odd">
+<td>Гибкость</td>
+<td>Есть</td>
+<td>Нет</td>
+</tr>
+<tr class="even">
+<td>Историческое значение</td>
+<td>Высокое</td>
+<td>Среднее</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="вывод">Вывод</h1>
+<p>Изучили основы функционирования шифров замены, включая шифры Цезаря и Атбаша. Эти шифры имеют важное теоретическое значение для понимания базовых принципов криптографии, но обладают низкой криптостойкостью из-за ограниченного пространства ключей и сохранения частотных характеристик текста.</p>
+<hr />
+<h2 id="основные-выводы">Основные выводы:</h2>
+<ul>
+<li>Шифры простой замены служат отличным инструментом для образовательных целей</li>
+<li>Они демонстрируют фундаментальные принципы криптографии</li>
+<li>Абсолютно не пригодны для современных требований информационной безопасности</li>
+<li>Рекомендуется использовать только для обучения основам криптографии</li>
+</ul>
+<hr />
+<h1 id="литература">Литература</h1>
+<ol type="1">
+<li>Основы криптографии: учебное пособие. — М.: Горячая линия-Телеком, 2020.</li>
+</ol>
+</body>
+</html>

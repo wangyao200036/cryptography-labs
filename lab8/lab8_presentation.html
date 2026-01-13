@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU" xml:lang="ru-RU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Wang Yao" />
+  <title>Лабораторная работа №8</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  
+  
+  
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Лабораторная работа №8</h1>
+<p class="author">Wang Yao</p>
+<p class="date">3 января 2026</p>
+</header>
+<h1 id="цель-работы">Цель работы</h1>
+<p>Изучить теоретические основы арифметических операций с целыми числами многократной точности, реализовать алгоритмы сложения, вычитания, умножения и деления больших целых чисел, провести тестирование и анализ их эффективности.</p>
+<hr />
+<h1 id="ход-лабораторной-работы">Ход лабораторной работы</h1>
+<h2 id="основные-понятия">Основные понятия</h2>
+<p>• <strong>Большие целые числа</strong>: числа, превышающие стандартные типы данных компьютера<br />
+• <strong>b-ичная система счисления</strong>: представление числа в виде <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><msub><mi>u</mi><mn>1</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>u</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">u = u_1u_2...u_n</annotation></semantics></math> по основанию <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>≥</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">b \ge 2</annotation></semantics></math><br />
+• <strong>Многократная точность</strong>: арифметические операции с числами произвольной длины<br />
+• <strong>Алгоритмы</strong>: детерминированные процедуры для выполнения арифметических операций<br />
+• <strong>Криптографическое значение</strong>: операции с большими числами лежат в основе современных криптосистем</p>
+<hr />
+<h2 id="алгоритм-сложения">Алгоритм сложения</h2>
+<p><strong>Вход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><msub><mi>u</mi><mn>1</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>u</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">u = u_1u_2...u_n</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>v</mi><mn>1</mn></msub><msub><mi>v</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>v</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">v = v_1v_2...v_n</annotation></semantics></math>, основание <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math><br />
+<strong>Выход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><msub><mi>w</mi><mn>0</mn></msub><msub><mi>w</mi><mn>1</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>w</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">w = w_0w_1...w_n</annotation></semantics></math> (с переносом)</p>
+<p><strong>Псевдокод</strong>: 1. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>:=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">j := n</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>:=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">k := 0</annotation></semantics></math> (перенос) 2. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>j</mi></msub><mo>:=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mi>j</mi></msub><mo>+</mo><msub><mi>v</mi><mi>j</mi></msub><mo>+</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo><mo>mod</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">w_j := (u_j + v_j + k) \mod b</annotation></semantics></math> 3. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>:=</mo><mo stretchy="false" form="prefix">⌊</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mi>j</mi></msub><mo>+</mo><msub><mi>v</mi><mi>j</mi></msub><mo>+</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>b</mi><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">k := \lfloor (u_j + v_j + k) / b \rfloor</annotation></semantics></math> 4. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>:=</mo><mi>j</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">j := j - 1</annotation></semantics></math>, если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">j &gt; 0</annotation></semantics></math> → шаг 2 5. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>0</mn></msub><mo>:=</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">w_0 := k</annotation></semantics></math></p>
+<p><strong>Пример</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>999</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>1000</mn></mrow><annotation encoding="application/x-tex">999 + 1 = 1000</annotation></semantics></math> (десятичная система)<br />
+<strong>Сложность</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></p>
+<hr />
+<h2 id="алгоритм-вычитания">Алгоритм вычитания</h2>
+<p><strong>Вход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><msub><mi>u</mi><mn>1</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>u</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">u = u_1u_2...u_n</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>v</mi><mn>1</mn></msub><msub><mi>v</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>v</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">v = v_1v_2...v_n</annotation></semantics></math>, основание <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math><br />
+<strong>Выход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><msub><mi>w</mi><mn>1</mn></msub><msub><mi>w</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>w</mi><mi>n</mi></msub><mo>=</mo><mi>u</mi><mo>−</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">w = w_1w_2...w_n = u - v</annotation></semantics></math></p>
+<p><strong>Псевдокод</strong>: 1. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>:=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">j := n</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>:=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">k := 0</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> — заём) 2. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>j</mi></msub><mo>:=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mi>j</mi></msub><mo>−</mo><msub><mi>v</mi><mi>j</mi></msub><mo>+</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo><mo>mod</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">w_j := (u_j - v_j + k) \mod b</annotation></semantics></math> 3. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>:=</mo><mo stretchy="false" form="prefix">⌊</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mi>j</mi></msub><mo>−</mo><msub><mi>v</mi><mi>j</mi></msub><mo>+</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>b</mi><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">k := \lfloor (u_j - v_j + k) / b \rfloor</annotation></semantics></math> 4. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>:=</mo><mi>j</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">j := j - 1</annotation></semantics></math>, если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">j &gt; 0</annotation></semantics></math> → шаг 2 5. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>0</mn></msub><mo>:=</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">w_0 := k</annotation></semantics></math></p>
+<p><strong>Пример</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1000</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>999</mn></mrow><annotation encoding="application/x-tex">1000 - 1 = 999</annotation></semantics></math> (десятичная система)<br />
+<strong>Сложность</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math><br />
+<strong>Требование</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>≥</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u \ge v</annotation></semantics></math></p>
+<hr />
+<h2 id="алгоритм-умножения-столбиком">Алгоритм умножения столбиком</h2>
+<p><strong>Вход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><msub><mi>u</mi><mn>1</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>u</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">u = u_1u_2...u_n</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>v</mi><mn>1</mn></msub><msub><mi>v</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>v</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">v = v_1v_2...v_m</annotation></semantics></math>, основание <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math><br />
+<strong>Выход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><msub><mi>w</mi><mn>1</mn></msub><msub><mi>w</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>w</mi><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">w = w_1w_2...w_{m+n}</annotation></semantics></math></p>
+<p><strong>Принцип работы</strong>: - Классический метод “школьного” умножения - Каждая цифра <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>u</mi><mi>i</mi></msub><annotation encoding="application/x-tex">u_i</annotation></semantics></math> умножается на каждую цифру <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>j</mi></msub><annotation encoding="application/x-tex">v_j</annotation></semantics></math> - Результаты суммируются с учётом позиций</p>
+<p><strong>Пример</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>123</mn><mo>×</mo><mn>456</mn><mo>=</mo><mn>56088</mn></mrow><annotation encoding="application/x-tex">123 \times 456 = 56088</annotation></semantics></math><br />
+<strong>Сложность</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>⋅</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n \cdot m)</annotation></semantics></math></p>
+<hr />
+<h2 id="алгоритм-быстрого-умножения">Алгоритм быстрого умножения</h2>
+<p><strong>Вход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><msub><mi>u</mi><mn>1</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>u</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">u = u_1u_2...u_n</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>v</mi><mn>1</mn></msub><msub><mi>v</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>v</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">v = v_1v_2...v_m</annotation></semantics></math>, основание <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math><br />
+<strong>Выход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><msub><mi>w</mi><mn>1</mn></msub><msub><mi>w</mi><mn>2</mn></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>w</mi><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">w = w_1w_2...w_{m+n}</annotation></semantics></math></p>
+<p><strong>Оптимизация</strong>: - Суммирование произведений для каждого <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mi>i</mi><mo>+</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">s = i + j</annotation></semantics></math> - Более эффективная организация вычислений - Снижение количества промежуточных операций</p>
+<p><strong>Формула</strong>: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mrow><mi>m</mi><mo>+</mo><mi>n</mi><mo>−</mo><mi>s</mi></mrow></msub><mo>=</mo><munder><mo>∑</mo><mrow><mi>i</mi><mo>+</mo><mi>j</mi><mo>=</mo><mi>s</mi></mrow></munder><msub><mi>u</mi><mrow><mi>n</mi><mo>−</mo><mi>i</mi></mrow></msub><mo>⋅</mo><msub><mi>v</mi><mrow><mi>m</mi><mo>−</mo><mi>s</mi><mo>+</mo><mi>i</mi></mrow></msub><mo>mod</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">
+w_{m+n-s} = \sum_{i+j=s} u_{n-i} \cdot v_{m-s+i} \mod b
+</annotation></semantics></math></p>
+<p><strong>Сложность</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>⋅</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n \cdot m)</annotation></semantics></math> (лучшая константа)</p>
+<hr />
+<h2 id="алгоритм-деления">Алгоритм деления</h2>
+<p><strong>Вход</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><msub><mi>u</mi><mi>n</mi></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>u</mi><mn>1</mn></msub><msub><mi>u</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">u = u_n...u_1u_0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>v</mi><mi>t</mi></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>v</mi><mn>1</mn></msub><msub><mi>v</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">v = v_t...v_1v_0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>t</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \ge t \ge 1</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>t</mi></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">v_t \neq 0</annotation></semantics></math><br />
+<strong>Выход</strong>: Частное <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><msub><mi>q</mi><mrow><mi>n</mi><mo>−</mo><mi>t</mi></mrow></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>q</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">q = q_{n-t}...q_0</annotation></semantics></math>, остаток <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><msub><mi>r</mi><mi>t</mi></msub><mi>.</mi><mi>.</mi><mi>.</mi><msub><mi>r</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">r = r_t...r_0</annotation></semantics></math></p>
+<p><strong>Ключевые шаги</strong>: 1. Нормализация чисел 2. Поразрядное деление с коррекцией частного 3. Проверка и исправление отрицательных остатков 4. Формирование окончательного результата</p>
+<p><strong>Пример</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>12345</mn><mo>÷</mo><mn>67</mn><mo>=</mo><mn>184</mn></mrow><annotation encoding="application/x-tex">12345 ÷ 67 = 184</annotation></semantics></math> (остаток 17)<br />
+<strong>Сложность</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></p>
+<hr />
+<h2 id="сравнительный-анализ-алгоритмов">Сравнительный анализ алгоритмов</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 20%" />
+<col style="width: 14%" />
+<col style="width: 22%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Алгоритм</th>
+<th>Сложность</th>
+<th>Память</th>
+<th>Применение</th>
+<th>Особенности</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Сложение</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></td>
+<td>Базовая операция</td>
+<td>Линейная зависимость</td>
+</tr>
+<tr class="even">
+<td>Вычитание</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></td>
+<td>Базовая операция</td>
+<td>Требует <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>≥</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u \ge v</annotation></semantics></math></td>
+</tr>
+<tr class="odd">
+<td>Умножение столбиком</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>⋅</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n \cdot m)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n+m)</annotation></semantics></math></td>
+<td>Стандартное умножение</td>
+<td>Простая реализация</td>
+</tr>
+<tr class="even">
+<td>Быстрое умножение</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>⋅</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n \cdot m)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n+m)</annotation></semantics></math></td>
+<td>Оптимизированное умножение</td>
+<td>Эффективная организация</td>
+</tr>
+<tr class="odd">
+<td>Деление</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></td>
+<td>Самая сложная операция</td>
+<td>Требует коррекции</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="криптографические-применения">Криптографические применения</h2>
+<p>• <strong>RSA</strong>: умножение и возведение в степень больших чисел<br />
+• <strong>Эллиптические кривые</strong>: операции с точками требуют арифметики больших чисел<br />
+• <strong>Diffie-Hellman</strong>: модульные операции с большими простыми числами<br />
+• <strong>DSA/ECDSA</strong>: генерация и проверка подписей<br />
+• <strong>Оптимизация</strong>: эффективные алгоритмы критичны для производительности криптосистем</p>
+<hr />
+<h2 id="ограничения-и-оптимизации">Ограничения и оптимизации</h2>
+<p><strong>Ограничения</strong>: - Линейные алгоритмы неэффективны для очень больших чисел - Память растёт пропорционально длине чисел - Деление остаётся самой сложной операцией</p>
+<p><strong>Оптимизации</strong>: - Использование быстрого преобразования Фурье (FFT) для умножения - Блочные алгоритмы для работы с памятью - Параллельные вычисления для ускорения операций - Аппаратная поддержка (специальные процессоры)</p>
+<hr />
+<h1 id="вывод">Вывод</h1>
+<p>Изучили и реализовали основные алгоритмы целочисленной арифметики многократной точности.</p>
+<hr />
+<h2 id="основные-выводы">Основные выводы:</h2>
+<p>• <strong>Теоретическая ценность</strong>: Понимание фундаментальных алгоритмов компьютерной арифметики</p>
+<p>• <strong>Практическая значимость</strong>: Эти алгоритмы являются основой для криптографических систем и научных вычислений</p>
+<p>• <strong>Реализованные алгоритмы</strong>: - Сложение и вычитание: линейные алгоритмы <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math> - Умножение: квадратичные алгоритмы <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>⋅</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n \cdot m)</annotation></semantics></math> - Деление: наиболее сложная операция <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></p>
+<p>• <strong>Криптографическое применение</strong>: Эффективная арифметика больших чисел критически важна для производительности криптосистем</p>
+<p>• <strong>Итоговый вывод</strong>: Освоенные алгоритмы обеспечивают базовые навыки для работы с большими числами, которые необходимы в криптографии, компьютерной алгебре и вычислительной математике. Для реальных приложений требуются более оптимизированные алгоритмы (Karatsuba, Toom-Cook, Schönhage-Strassen).</p>
+<hr />
+<h1 id="литература">Литература</h1>
+<ol type="1">
+<li>Алгоритмы: построение и анализ. — СПб.: Вильямс, 2017.</li>
+</ol>
+</body>
+</html>

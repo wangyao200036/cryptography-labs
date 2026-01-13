@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU" xml:lang="ru-RU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Wang Yao" />
+  <title>Лабораторная работа №7</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  
+  
+  
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Лабораторная работа №7</h1>
+<p class="author">Wang Yao</p>
+<p class="date">3 января 2026</p>
+</header>
+<h1 id="цель-работы">Цель работы</h1>
+<p>Изучить теоретические основы задачи дискретного логарифмирования в конечных полях, реализовать ρ-метод Полларда для решения этой задачи, провести тестирование алгоритма и анализ его эффективности.</p>
+<hr />
+<h1 id="ход-лабораторной-работы">Ход лабораторной работы</h1>
+<h2 id="основные-понятия">Основные понятия</h2>
+<p>• <strong>Конечное поле <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>p</mi></msub><annotation encoding="application/x-tex">F_p</annotation></semantics></math></strong>: множество вычетов по простому модулю <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math><br />
+• <strong>Дискретный логарифм</strong>: для <span class="math inline">$a^x \equiv b \pmod{p}$</span>, найти <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mo>log</mo><mi>a</mi></msub><mi>b</mi></mrow><annotation encoding="application/x-tex">x = \log_a b</annotation></semantics></math><br />
+• <strong>Порядок элемента <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math></strong>: наименьшее <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r &gt; 0</annotation></semantics></math>, такое что <span class="math inline">$a^r \equiv 1 \pmod{p}$</span><br />
+• <strong>ρ-метод Полларда</strong>: вероятностный алгоритм поиска коллизий в псевдослучайной последовательности<br />
+• <strong>Задача дискретного логарифмирования (DLP)</strong>: фундаментальная проблема в криптографии</p>
+<hr />
+<h2 id="ρ-метод-полларда-для-dlp">ρ-метод Полларда для DLP</h2>
+<p><strong>Основа</strong>: поиск цикла в последовательности <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>c</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c_{i+1} = f(c_i)</annotation></semantics></math>, где <span class="math display">$$
+c_i = a^{\alpha_i}b^{\beta_i} \pmod{p}
+$$</span></p>
+<p><strong>Алгоритм “черепахи и зайца”</strong>: 1. Инициализировать два указателя: черепаху <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><msub><mi>α</mi><mi>t</mi></msub><mo>,</mo><msub><mi>β</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(c_t, \alpha_t, \beta_t)</annotation></semantics></math> и зайца <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>c</mi><mi>h</mi></msub><mo>,</mo><msub><mi>α</mi><mi>h</mi></msub><mo>,</mo><msub><mi>β</mi><mi>h</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(c_h, \alpha_h, \beta_h)</annotation></semantics></math> 2. Обновлять их с разной скоростью: черепаха - один шаг, заяц - два шага 3. При коллизии <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>t</mi></msub><mo>=</mo><msub><mi>c</mi><mi>h</mi></msub></mrow><annotation encoding="application/x-tex">c_t = c_h</annotation></semantics></math> получить уравнение: <span class="math display">$$
+   (\beta_t - \beta_h)x \equiv (\alpha_h - \alpha_t) \pmod{r}
+   $$</span> 4. Решить линейное сравнение относительно <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math></p>
+<p><strong>Сложность</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{r})</annotation></semantics></math>, где <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math> - порядок элемента <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math></p>
+<hr />
+<h2 id="алгоритм-пошаговая-реализация">Алгоритм: пошаговая реализация</h2>
+<p>• <strong>Разбиение множества</strong>: Разделить <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>F</mi><mi>p</mi><mo>*</mo></msubsup><annotation encoding="application/x-tex">F_p^*</annotation></semantics></math> на 3 подмножества по <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>mod</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">c \bmod 3</annotation></semantics></math></p>
+<p>• <strong>Функция перехода</strong>: - Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>∈</mo><msub><mi>S</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">c \in S_1</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>←</mo><mi>c</mi><mo>⋅</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">c \leftarrow c \cdot a</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>←</mo><mi>α</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\alpha \leftarrow \alpha + 1</annotation></semantics></math> - Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>∈</mo><msub><mi>S</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">c \in S_2</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>←</mo><mi>c</mi><mo>⋅</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">c \leftarrow c \cdot b</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>←</mo><mi>β</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\beta \leftarrow \beta + 1</annotation></semantics></math> - Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>∈</mo><msub><mi>S</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">c \in S_3</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>←</mo><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">c \leftarrow c^2</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>←</mo><mn>2</mn><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha \leftarrow 2\alpha</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>←</mo><mn>2</mn><mi>β</mi></mrow><annotation encoding="application/x-tex">\beta \leftarrow 2\beta</annotation></semantics></math></p>
+<p>• <strong>Инициализация</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>c</mi><mtext mathvariant="normal">черепаха</mtext></msub><mo>,</mo><msub><mi>α</mi><mtext mathvariant="normal">черепаха</mtext></msub><mo>,</mo><msub><mi>β</mi><mtext mathvariant="normal">черепаха</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(c_{\text{черепаха}}, \alpha_{\text{черепаха}}, \beta_{\text{черепаха}}) = (1, 0, 0)</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>c</mi><mtext mathvariant="normal">заяц</mtext></msub><mo>,</mo><msub><mi>α</mi><mtext mathvariant="normal">заяц</mtext></msub><mo>,</mo><msub><mi>β</mi><mtext mathvariant="normal">заяц</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(c_{\text{заяц}}, \alpha_{\text{заяц}}, \beta_{\text{заяц}}) = (1, 0, 0)</annotation></semantics></math></p>
+<p>• <strong>Поиск цикла</strong>: Обновлять указатели до коллизии <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mtext mathvariant="normal">черепаха</mtext></msub><mo>=</mo><msub><mi>c</mi><mtext mathvariant="normal">заяц</mtext></msub></mrow><annotation encoding="application/x-tex">c_{\text{черепаха}} = c_{\text{заяц}}</annotation></semantics></math></p>
+<hr />
+<h2 id="тестирование-и-результаты">Тестирование и результаты</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Уравнение</th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math></th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math></th>
+<th>Найденный <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math></th>
+<th>Проверка</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">$10^x \equiv 64 \pmod{107}$</span></td>
+<td>107</td>
+<td>53</td>
+<td>20</td>
+<td><span class="math inline">$10^{20} \equiv 64 \pmod{107}$</span> ✓</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">$5^x \equiv 20 \pmod{23}$</span></td>
+<td>23</td>
+<td>22</td>
+<td>5</td>
+<td><span class="math inline">$5^5 \equiv 20 \pmod{23}$</span> ✓</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">$2^x \equiv 10 \pmod{11}$</span></td>
+<td>11</td>
+<td>10</td>
+<td>3</td>
+<td><span class="math inline">$2^3 \equiv 8 \pmod{11}$</span> ✗</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="сравнительный-анализ-методов">Сравнительный анализ методов</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Параметр</th>
+<th>ρ-метод Полларда</th>
+<th>Baby-Step Giant-Step</th>
+<th>Index Calculus</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Сложность</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{r})</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{r})</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>c</mi><msqrt><mrow><mo>log</mo><mi>p</mi><mo>log</mo><mo>log</mo><mi>p</mi></mrow></msqrt></mrow></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(e^{c\sqrt{\log p \log \log p}})</annotation></semantics></math></td>
+</tr>
+<tr class="even">
+<td>Память</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{r})</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{r})</annotation></semantics></math></td>
+</tr>
+<tr class="odd">
+<td>Тип алгоритма</td>
+<td>Вероятностный</td>
+<td>Детерминированный</td>
+<td>Вероятностный</td>
+</tr>
+<tr class="even">
+<td>Требования</td>
+<td>Знание порядка <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math></td>
+<td>Знание границы <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math></td>
+<td>Требует гладких чисел</td>
+</tr>
+<tr class="odd">
+<td>Практическое применение</td>
+<td>Средние группы</td>
+<td>Малые группы</td>
+<td>Большие простые</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="криптографическое-значение">Криптографическое значение</h2>
+<p>• <strong>Безопасность DLP</strong>: основа криптосистем Диффи-Хеллмана, ElGamal, DSA<br />
+• <strong>Параметры безопасности</strong>: размер группы должен быть достаточно большим<br />
+• <strong>Атаки на криптосистемы</strong>: эффективные алгоритмы DLP позволяют взламывать криптосистемы<br />
+• <strong>Рекомендуемые размеры</strong>: современные стандарты требуют 2048-битные модули для DLP</p>
+<hr />
+<h2 id="ограничения-и-особенности-ρ-метода">Ограничения и особенности ρ-метода</h2>
+<p><strong>Преимущества</strong>: - Временная сложность <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{r})</annotation></semantics></math> - Эффективен для групп среднего размера - Требует мало памяти (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math>) - Простота реализации</p>
+<p><strong>Недостатки</strong>: - Вероятностный алгоритм (может потребоваться перезапуск) - Требует знания порядка <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math> элемента <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> - Не всегда находит решение - Медленный для очень больших групп</p>
+<hr />
+<h1 id="вывод">Вывод</h1>
+<p>Изучили задачу дискретного логарифмирования и реализовали ρ-метод Полларда для её решения.</p>
+<hr />
+<h2 id="основные-выводы">Основные выводы:</h2>
+<p>• <strong>Теоретическая ценность</strong>: Понимание фундаментальной задачи криптографии</p>
+<p>• <strong>Практическая значимость</strong>: Методы решения DLP критически важны для анализа криптосистем</p>
+<p>• <strong>Эффективность алгоритма</strong>: - ρ-метод показал хорошие результаты на тестовых примерах - Временная сложность <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{r})</annotation></semantics></math> делает его применимым для групп среднего размера - Недостаток: требует знания порядка элемента</p>
+<p>• <strong>Криптографическое применение</strong>: Понимание DLP необходимо для оценки безопасности криптосистем, основанных на этой проблеме</p>
+<p>• <strong>Итоговый вывод</strong>: ρ-метод Полларда является эффективным инструментом для решения задачи дискретного логарифмирования в группах умеренного размера, но для реальных криптографических параметров требуются более совершенные методы.</p>
+<hr />
+<h1 id="литература">Литература</h1>
+<ol type="1">
+<li>Теория чисел и криптография. — М.: Физматлит, 2018.</li>
+</ol>
+</body>
+</html>

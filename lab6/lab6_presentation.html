@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU" xml:lang="ru-RU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Wang Yao" />
+  <title>Лабораторная работа №6</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  
+  
+  
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Лабораторная работа №6</h1>
+<p class="author">Wang Yao</p>
+<p class="date">3 января 2026</p>
+</header>
+<h1 id="цель-работы">Цель работы</h1>
+<p>Изучить теоретические основы алгоритмов разложения чисел на множители, реализовать ρ-метод Полларда и метод квадратов Ферма, провести сравнительный анализ их эффективности и точности.</p>
+<hr />
+<h1 id="ход-лабораторной-работы">Ход лабораторной работы</h1>
+<h2 id="основные-понятия">Основные понятия</h2>
+<p>• <strong>Факторизация</strong>: разложение составного числа на простые множители<br />
+• <strong>Нетривиальный делитель</strong>: делитель, отличный от 1 и самого числа<br />
+• <strong>ρ-метод</strong>: вероятностный алгоритм, использующий поиск циклов<br />
+• <strong>Метод Ферма</strong>: основан на представлении числа как разности квадратов<br />
+• <strong>Сложность факторизации</strong>: фундаментальная проблема криптографии</p>
+<hr />
+<h2 id="ρ-метод-полларда">ρ-метод Полларда</h2>
+<p><strong>Основа</strong>: поиск цикла в последовательности <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x_{i+1} = f(x_i)</annotation></semantics></math></p>
+<p><strong>Алгоритм</strong>: 1. Инициализировать <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>y</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">x = y = 2</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">d = 1</annotation></semantics></math> 2. Пока <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">d = 1</annotation></semantics></math>: - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>mod</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">x = f(x) \mod n</annotation></semantics></math> - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>mod</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">y = f(f(y)) \mod n</annotation></semantics></math> - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mo>gcd</mo><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">|</mo><mi>x</mi><mo>−</mo><mi>y</mi><mo stretchy="false" form="prefix">|</mo><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">d = \gcd(|x-y|, n)</annotation></semantics></math> 3. Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">d = n</annotation></semantics></math> → неудача Иначе → найден делитель <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math></p>
+<p><strong>Особенности</strong>: - Использует алгоритм “черепахи и зайца” - Эффективен для чисел с малыми делителями - Сложность: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>p</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{p})</annotation></semantics></math>, где <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> - наименьший делитель</p>
+<hr />
+<h2 id="метод-квадратов-ферма">Метод квадратов Ферма</h2>
+<p><strong>Основа</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msup><mi>s</mi><mn>2</mn></msup><mo>−</mo><msup><mi>t</mi><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">n = s^2 - t^2 = (s-t)(s+t)</annotation></semantics></math></p>
+<p><strong>Алгоритм</strong>: 1. Найти наименьшее <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>&gt;</mo><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">s &gt; \sqrt{n}</annotation></semantics></math> 2. Вычислить <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>t</mi><mn>2</mn></msup><mo>=</mo><msup><mi>s</mi><mn>2</mn></msup><mo>−</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">t^2 = s^2 - n</annotation></semantics></math> 3. Пока <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>t</mi><mn>2</mn></msup><annotation encoding="application/x-tex">t^2</annotation></semantics></math> не является полным квадратом: - Увеличить <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math> на 1 - Пересчитать <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>t</mi><mn>2</mn></msup><mo>=</mo><msup><mi>s</mi><mn>2</mn></msup><mo>−</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">t^2 = s^2 - n</annotation></semantics></math> 4. Найден делители: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(s-t)</annotation></semantics></math> и <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(s+t)</annotation></semantics></math></p>
+<p><strong>Особенности</strong>: - Эффективен, когда делители близки к <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mi>n</mi></msqrt><annotation encoding="application/x-tex">\sqrt{n}</annotation></semantics></math> - Прост в реализации - Медленный для чисел с сильно различающимися делителями</p>
+<hr />
+<h2 id="пример-работы-ρ-метод-полларда">Пример работы: ρ-метод Полларда</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Число <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math></th>
+<th>Функция <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math></th>
+<th>Делитель</th>
+<th>Второй делитель</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1359331</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">x^2 + 5</annotation></semantics></math></td>
+<td>1181</td>
+<td>1151</td>
+</tr>
+<tr class="even">
+<td>10403</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">x^2 + 5</annotation></semantics></math></td>
+<td>103</td>
+<td>101</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="пример-работы-метод-квадратов-ферма">Пример работы: Метод квадратов Ферма</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Число <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math></th>
+<th>Найденный <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math></th>
+<th><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math></th>
+<th>Делители</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1359331</td>
+<td>1166</td>
+<td>15</td>
+<td>1151 × 1181</td>
+</tr>
+<tr class="even">
+<td>10403</td>
+<td>102</td>
+<td>1</td>
+<td>101 × 103</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="сравнительный-анализ-методов">Сравнительный анализ методов</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Параметр</th>
+<th>ρ-метод Полларда</th>
+<th>Метод квадратов Ферма</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Сложность</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>p</mi></msqrt><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\sqrt{p})</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mfrac><mrow><msqrt><mi>n</mi></msqrt><mo>−</mo><msqrt><mi>p</mi></msqrt></mrow><mn>2</mn></mfrac><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\frac{\sqrt{n} - \sqrt{p}}{2})</annotation></semantics></math></td>
+</tr>
+<tr class="even">
+<td>Эффективность</td>
+<td>Лучше для малых делителей</td>
+<td>Лучше для близких делителей</td>
+</tr>
+<tr class="odd">
+<td>Простота реализации</td>
+<td>Средняя</td>
+<td>Высокая</td>
+</tr>
+<tr class="even">
+<td>Вероятностный</td>
+<td>Да</td>
+<td>Нет</td>
+</tr>
+<tr class="odd">
+<td>Память</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></td>
+</tr>
+<tr class="even">
+<td>Применимость</td>
+<td>Числа с небольшими делителями</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>≈</mo><mi>q</mi><mo>≈</mo><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">p \approx q \approx \sqrt{n}</annotation></semantics></math></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="криптографическое-значение">Криптографическое значение</h2>
+<p>• <strong>Безопасность RSA</strong>: основана на сложности факторизации больших чисел<br />
+• <strong>Ключевой параметр</strong>: длина модуля RSA определяет стойкость системы<br />
+• <strong>Атаки на RSA</strong>: использование эффективных алгоритмов факторизации<br />
+• <strong>Рекомендуемая длина</strong>: современные стандарты требуют 2048-битных ключей</p>
+<hr />
+<h2 id="ограничения-методов">Ограничения методов</h2>
+<p><strong>ρ-метод Полларда</strong>: - Может не сходиться для некоторых чисел - Требует выбора подходящей функции <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math> - Эффективен только для небольших делителей</p>
+<p><strong>Метод квадратов Ферма</strong>: - Очень медленный, если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> и <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math> сильно различаются - Неприменим для современных криптографических чисел - Историческое значение больше, чем практическое</p>
+<hr />
+<h1 id="вывод">Вывод</h1>
+<p>Изучили и реализовали два алгоритма факторизации: ρ-метод Полларда и метод квадратов Ферма.</p>
+<hr />
+<h2 id="основные-выводы">Основные выводы:</h2>
+<p>• <strong>Теоретическая ценность</strong>: Понимание фундаментальных алгоритмов теории чисел</p>
+<p>• <strong>Практическая значимость</strong>: Эти методы являются основой для атак на криптосистемы</p>
+<p>• <strong>Сравнительный анализ</strong>: - ρ-метод Полларда: эффективен для чисел с малыми делителями - Метод квадратов Ферма: хорош, когда делители близки друг к другу</p>
+<p>• <strong>Криптографическое применение</strong>: Оба метода слишком медленны для факторизации современных RSA-модулей, но важны для понимания принципов</p>
+<p>• <strong>Итоговый вывод</strong>: Выбор алгоритма факторизации зависит от структуры разлагаемого числа. Для реальных криптографических приложений используются более сложные методы (решето числового поля, эллиптические кривые).</p>
+<hr />
+<h1 id="литература">Литература</h1>
+<ol type="1">
+<li>Теория чисел и криптография. — М.: Физматлит, 2018.</li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU" xml:lang="ru-RU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Wang Yao" />
+  <title>Лабораторная работа №5</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  
+  
+  
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Лабораторная работа №5</h1>
+<p class="author">Wang Yao</p>
+<p class="date">3 января 2026</p>
+</header>
+<h1 id="цель-работы">Цель работы</h1>
+<p>Изучить теоретические основы вероятностных алгоритмов проверки чисел на простоту, реализовать три теста (Ферма, Соловэя–Штрассена, Миллера–Рабина) и провести сравнительный анализ их эффективности и точности.</p>
+<hr />
+<h1 id="ход-лабораторной-работы">Ход лабораторной работы</h1>
+<h2 id="основные-понятия">Основные понятия</h2>
+<p>• <strong>Простое число</strong>: имеет ровно два делителя — 1 и само себя<br />
+• <strong>Составное число</strong>: имеет более двух делителей<br />
+• <strong>Вероятностный алгоритм</strong>: использует случайность, даёт ответ с некоторой вероятностью ошибки<br />
+• <strong>Детерминированный алгоритм</strong>: всегда выдаёт точный результат<br />
+• <strong>Число Кармайкла</strong>: составное число, которое ведёт себя как простое по малой теореме Ферма</p>
+<hr />
+<h2 id="тест-ферма">Тест Ферма</h2>
+<p><strong>Основа</strong>: Малая теорема Ферма<br />
+Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> — простое число и <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>a</mi><mo>&lt;</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">1 \leq a &lt; p</annotation></semantics></math>, то:<br />
+<span class="math display">$$
+a^{p-1} \equiv 1 \pmod{p}
+$$</span></p>
+<p><strong>Алгоритм</strong>: 1. Выбрать случайное <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">a \in [2, n-2]</annotation></semantics></math> 2. Вычислить <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><msup><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>mod</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">r = a^{n-1} \bmod n</annotation></semantics></math> 3. Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>≠</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">r \ne 1</annotation></semantics></math> → <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> <strong>составное</strong><br />
+Иначе → <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> <strong>вероятно простое</strong></p>
+<p><strong>Недостаток</strong>: Не обнаруживает числа Кармайкла</p>
+<hr />
+<h2 id="тест-соловэяштрассена">Тест Соловэя–Штрассена</h2>
+<p><strong>Основа</strong>: Критерий Эйлера + символ Якоби<br />
+Для нечётного простого числа <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> и целого <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>:<br />
+<span class="math display">$$
+a^{\frac{p-1}{2}} \equiv \left( \frac{a}{p} \right) \pmod{p}
+$$</span></p>
+<p><strong>Алгоритм</strong>: 1. Выбрать случайное <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">a \in [2, n-2]</annotation></semantics></math> 2. Вычислить <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><msup><mi>a</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mrow></msup><mo>mod</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">r = a^{(n-1)/2} \bmod n</annotation></semantics></math> 3. Вычислить символ Якоби <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>a</mi><mi>n</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">s = \left( \frac{a}{n} \right)</annotation></semantics></math> 4. Если <span class="math inline">$r \not\equiv s \pmod{n}$</span> → <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> <strong>составное</strong></p>
+<p><strong>Преимущество</strong>: Более надёжен, чем тест Ферма</p>
+<hr />
+<h2 id="тест-миллерарабина">Тест Миллера–Рабина</h2>
+<p><strong>Основа</strong>: Разложение <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo>=</mo><msup><mn>2</mn><mi>s</mi></msup><mo>⋅</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">n-1 = 2^s \cdot d</annotation></semantics></math>, где <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math> — нечётное</p>
+<p><strong>Алгоритм</strong>: 1. Записать <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo>=</mo><msup><mn>2</mn><mi>s</mi></msup><mo>⋅</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">n-1 = 2^s \cdot d</annotation></semantics></math>, где <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math> — нечётное 2. Выбрать случайное <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>2</mn><mo>,</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">a \in [2, n-2]</annotation></semantics></math> 3. Вычислить <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msup><mi>a</mi><mi>d</mi></msup><mo>mod</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">x = a^d \bmod n</annotation></semantics></math> 4. Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 1</annotation></semantics></math> или <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = n-1</annotation></semantics></math> → проходит 5. Для <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r = 0</annotation></semantics></math> до <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">s-1</annotation></semantics></math>: - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>mod</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">x = x^2 \bmod n</annotation></semantics></math> - Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = n-1</annotation></semantics></math> → проходит - Если <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x = 1</annotation></semantics></math> → <strong>составное</strong> 6. Если ни разу не получили <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> → <strong>составное</strong></p>
+<p><strong>Преимущество</strong>: Наиболее надёжен из вероятностных тестов</p>
+<hr />
+<h2 id="результаты-тестирования">Результаты тестирования</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Число</th>
+<th>Тип</th>
+<th>Тест Ферма</th>
+<th>Соловэя–Штрассена</th>
+<th>Миллера–Рабина</th>
+<th>Комментарий</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>17</td>
+<td>Простое</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>Корректно</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td>Составное</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>Корректно</td>
+</tr>
+<tr class="odd">
+<td>97</td>
+<td>Простое</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>Корректно</td>
+</tr>
+<tr class="even">
+<td>561</td>
+<td>Кармайкл</td>
+<td>×</td>
+<td>√</td>
+<td>√</td>
+<td>Ферма обманут!</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Примечание</strong>: 561 = 3 × 11 × 17 — первое число Кармайкла</p>
+<hr />
+<h2 id="сравнительный-анализ-тестов">Сравнительный анализ тестов</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Параметр</th>
+<th>Тест Ферма</th>
+<th>Соловэя–Штрассена</th>
+<th>Миллера–Рабина</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Сложность</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mo>log</mo><mn>3</mn></msup><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\log^3 n)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mo>log</mo><mn>3</mn></msup><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\log^3 n)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mo>log</mo><mn>3</mn></msup><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(\log^3 n)</annotation></semantics></math></td>
+</tr>
+<tr class="even">
+<td>Вероятность ошибки</td>
+<td>Высокая</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">1/2</annotation></semantics></math> за итерацию</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">1/4</annotation></semantics></math> за итерацию</td>
+</tr>
+<tr class="odd">
+<td>Надёжность</td>
+<td>Низкая</td>
+<td>Средняя</td>
+<td>Высокая</td>
+</tr>
+<tr class="even">
+<td>Обнаружение Кармайкла</td>
+<td>Нет</td>
+<td>Да</td>
+<td>Да</td>
+</tr>
+<tr class="odd">
+<td>Практическое применение</td>
+<td>Ограничено</td>
+<td>Редко</td>
+<td>Широко (RSA, TLS)</td>
+</tr>
+<tr class="even">
+<td>Память</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="криптографическое-значение">Криптографическое значение</h2>
+<p>• <strong>Генерация ключей</strong>: Вероятностные тесты используются для генерации больших простых чисел в RSA, DSA, Diffie-Hellman<br />
+• <strong>Безопасность</strong>: Тест Миллера–Рабина с достаточным количеством итераций обеспечивает вероятность ошибки менее <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>2</mn><mrow><mo>−</mo><mn>100</mn></mrow></msup><annotation encoding="application/x-tex">2^{-100}</annotation></semantics></math><br />
+• <strong>Производительность</strong>: Вероятностные тесты значительно быстрее детерминированных для больших чисел</p>
+<hr />
+<h1 id="вывод">Вывод</h1>
+<p>Изучили и реализовали три вероятностных теста проверки чисел на простоту: Ферма, Соловэя–Штрассена и Миллера–Рабина.</p>
+<hr />
+<h2 id="основные-выводы">Основные выводы:</h2>
+<p>• <strong>Теоретическая ценность</strong>: Понимание математических основ вероятностной проверки простоты</p>
+<p>• <strong>Практическая значимость</strong>: Эти алгоритмы критически важны для криптографических систем</p>
+<p>• <strong>Сравнительный анализ</strong>: - Тест Ферма: прост, но ненадёжен из-за чисел Кармайкла - Тест Соловэя–Штрассена: более надёжен, но сложнее в реализации - Тест Миллера–Рабина: наиболее надёжен и широко используется на практике</p>
+<p>• <strong>Криптографическое применение</strong>: Тест Миллера–Рабина является стандартом для генерации простых чисел в RSA и других криптосистемах</p>
+<p>• <strong>Итоговый вывод</strong>: Вероятностные тесты обеспечивают эффективный баланс между точностью и производительностью, что делает их незаменимыми в современных криптографических приложениях.</p>
+<hr />
+<h1 id="литература">Литература</h1>
+<ol type="1">
+<li>Теория чисел и криптография. — М.: Физматлит, 2018.</li>
+</ol>
+</body>
+</html>
